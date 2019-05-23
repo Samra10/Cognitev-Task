@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+
+<h2>ALL Campaigns Data</h2>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New Campaign", "Create")
+    </p>
+
+<table class="table  table-striped" id="campaignTable">
+    <tr>
+        <th>Campaign Name</th>
+        <th>Country</th>
+        <th>Budget</th>
+        <th>Goal</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>URL</th>
+        <th></th> 
+    </tr>
+
+
+    <tr id="data">
+        
+    </tr>
+
+</table>
+
+    <script>
+        $(document).ready(function myFunction() {
+            $.ajax({
+            url: 'http://localhost:60203/api/campaign',
+            type: 'GET',
+            dataType: 'json',            
+            success: function (data) {                
+                var campaigns = data;
+                for (var i = 0; i < campaigns.length; i++) {
+                    $("#campaignTable").append(
+                        "<tr><td>" + campaigns[i].name + "</td><td>" + campaigns[i].country + "</td><td>" + campaigns[i].budget + "</td><td>" +
+                            campaigns[i].Goal + "</td><td>" + campaigns[i].Category + "</td><td>" + campaigns[i].Date + "</td><td>" + campaigns[i].URL + "</td></tr>" 
+                    );
+                }
+            },
+            error: function (x, y, z) {
+                alert("Error Loading Data");
+            }
+        });     
+        });
+    </script>
+</body>
+</html>
