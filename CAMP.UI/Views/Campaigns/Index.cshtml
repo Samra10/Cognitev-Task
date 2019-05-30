@@ -1,6 +1,19 @@
 ﻿<!DOCTYPE html>
-<html>
+<style>
+   #create {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
 
+</style>
+
+<html>
 <h2>ALL Campaigns Data</h2>
 <head>
     <title></title>
@@ -15,45 +28,79 @@
         @Html.ActionLink("Create New Campaign", "Create")
     </p>
 
-<table class="table  table-striped" id="campaignTable">
-    <tr>
-        <th>Campaign Name</th>
-        <th>Country</th>
-        <th>Budget</th>
-        <th>Goal</th>
-        <th>Category</th>
-        <th>Date</th>
-        <th>URL</th>
-        <th></th> 
-    </tr>
+    <table class="table  table-striped" id="campaignTable">
+        <tr>
+            <th>Campaign Name</th>
+            <th>Country</th>
+            <th>Budget</th>
+            <th>Goal</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>URL</th>
+            <th></th>
+        </tr>
 
 
-    <tr id="data">
-        
-    </tr>
+        <tr id="data"></tr>
 
-</table>
+    </table>
 
-    <script>
-        $(document).ready(function myFunction() {
-            $.ajax({
+    <hr>
+    <div>
+        <div class="form-group">
+            <label>Select Deimensions: </label>
+            <select>
+                <option value="Country">Country</option>
+                <option value="Budget">Budget</option>
+                <option value="Goal">Goal</option>
+                <option value="Category">Category</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Select Fields: </label>
+            <select>
+                <option value="Country">Country</option>
+                <option value="Budget">Budget</option>
+                <option value="Goal">Goal</option>
+                <option value="Category">Category</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Select Start Date: </label>
+            <input type="date" name="sdate">
+        </div>
+
+        <div class="form-group">
+            <label>Select End Date: </label>
+            <input type="date" name="edate">
+        </div>
+
+        <input type="button" id="create"  value="Create Chart" />
+
+    </div>
+
+</body>
+</html>
+<script>
+    $(document).ready(function myFunction() {
+        $.ajax({
             url: 'http://localhost:60203/api/campaign',
             type: 'GET',
-            dataType: 'json',            
-            success: function (data) {                
+            dataType: 'json',
+            success: function (data) {
                 var campaigns = data;
                 for (var i = 0; i < campaigns.length; i++) {
                     $("#campaignTable").append(
                         "<tr><td>" + campaigns[i].name + "</td><td>" + campaigns[i].country + "</td><td>" + campaigns[i].budget + "</td><td>" +
-                            campaigns[i].Goal + "</td><td>" + campaigns[i].Category + "</td><td>" + campaigns[i].Date + "</td><td>" + campaigns[i].URL + "</td></tr>" 
+                        campaigns[i].Goal + "</td><td>" + campaigns[i].Category + "</td><td>" + campaigns[i].Date + "</td><td>" + campaigns[i].URL + "</td></tr>"
                     );
                 }
             },
             error: function (x, y, z) {
                 alert("Error Loading Data");
             }
-        });     
         });
-    </script>
-</body>
-</html>
+    });
+</script>

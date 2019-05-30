@@ -1,4 +1,19 @@
-﻿
+﻿<style>
+    label {
+        width: 80px;
+       
+    }
+    #submit {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
 
 <h2>Create Campaign</h2>
 
@@ -6,55 +21,42 @@
 
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">d
-        <h4>Campaign</h4>
+    <div class="form-horizontal">
         <hr />
         <div class="form-group">
-           Name :
-            <div class="col-md-10">
+            <label ">Name: </label>
                 <input type="text" id="txtaddname" />
-            </div>
         </div>
 
         <div class="form-group">
-            Country: 
-            <div class="col-md-10">
+            <label>Country: </label>
                 <input type="text" id="txtaddcountry" />
-            </div>
         </div>
 
         <div class="form-group">
-            Budget: 
-            <div class="col-md-10">
+            <label>Budget: </label>
                 <input type="text" id="txtaddbudget" />
-            </div>
         </div>
 
         <div class="form-group">
-            Goal:
-            <div class="col-md-10">
+            <label>Goal: </label>
                 <input type="text" id="txtaddgoal" />
-            </div>
         </div>
 
         <div class="form-group">
-            Category:
-            <div class="col-md-10">
+            <label>Category: </label>
                 <input type="text" id="txtaddcategory" />
-            </div>
         </div>
 
 
         <div class="form-group">
-            URL :
-            <div class="col-md-10">
+            <label>URL: </label>
                 <input type="text" id="txtaddurl" />
-            </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="button" onclick="AddCampaign()" value="Add Campaign" />
+                <input  type="button" id="submit" onclick="AddCampaign()" value="Add Campaign " />
             </div>
         </div>
     </div>
@@ -66,16 +68,23 @@
 
 
 <script>
+    var catTmp;
     function AddCampaign() {
+        var cat = $('#txtaddcategory').val();
+        if (cat.length == 0) {
+            getCategory();
+            cat = catTmp;
+        }
+
         var campaign = {
             name: $('#txtaddname').val(),
             country: $('#txtaddcountry').val(),
             budget: $('#txtaddbudget').val(),
             Goal: $('#txtaddgoal').val(),
-            Category: $('#txtaddcategory').val(),
-            Date: Date.now().toString(),
+            Category: cat,
+            Date: Date.now(),
             URL: $('#txtaddurl').val()
-        };       
+        };
         
         $.ajax({
             url: 'http://localhost:60203/api/campaign',
@@ -83,11 +92,25 @@
             data:JSON.stringify(campaign),            
             contentType: "application/json;charset=utf-8",
             success: function (data) {
-                WriteResponse("success");
+                alert("success");
             },
             error: function (x, y, z) {
                 alert(x + '\n' + y + '\n' + z);
             }
+        });
+        }
+
+    function getCategory() {
+        var url = $('#txtaddurl').val();
+        $.ajax({
+            type: "GET",
+            url: 'https://ngkc0vhbrl.execute-api.eu-west-1.amazonaws.com/api/?url=' + url,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
+                catTmp = data.category.name.toString();
+            },
+            error: function(x){ alert( x +"Failed to Add Category")}
         });
     }
 </script>
