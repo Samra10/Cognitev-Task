@@ -2,7 +2,7 @@
 <br/><br/>
 
 ## Descreption
- This is a task for Cognitev Internship to create a simple service and endpoint to create charts.
+ * This is a task for Cognitev Internship to create a simple service and endpoint to create charts.
  <br/>
  
  ## Installation
